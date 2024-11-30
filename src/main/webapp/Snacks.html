@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veg Food Menu</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .food-item {
+            margin: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        body, html {
+            height: 100%;
+            margin: 0;
+            background: url('snacks.jpg') no-repeat center center fixed;
+            background-size: cover;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .container-fluid {
+            background-color: rgba(0, 0, 0, 0.8); 
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <h1 class="text-center">Snacks Menu</h1>
+        <div class="row text-center" id="food-list">
+            <!-- Food items will be generated here -->
+        </div>
+        <div class="text-center mt-3">
+            <a href="cart.html" class="btn btn-success">Go to Cart</a>
+        </div>
+    </div>
+
+    <script>
+        const foods = [
+    { name: "Spring Rolls", price: 8 },
+    { name: "Samosa", price: 5 },
+    { name: "Nachos", price: 7 },
+    { name: "French Fries", price: 6 },
+    { name: "Mozzarella Sticks", price: 9 },
+    { name: "Chicken Wings", price: 12 },
+    { name: "Onion Rings", price: 6 },
+    { name: "Garlic Bread", price: 5 },
+    { name: "Buffalo Shrimp", price: 13 },
+    { name: "Loaded Potato Skins", price: 10 },
+    { name: "Mini Tacos", price: 7 },
+    { name: "Cheese Quesadilla", price: 8 },
+    { name: "Popcorn Chicken", price: 11 },
+    { name: "Stuffed Mushrooms", price: 10 },
+    { name: "Fried Calamari", price: 13 },
+    { name: "Mini Meatballs", price: 9 },
+    { name: "Bacon-Wrapped Jalapeños", price: 12 },
+    { name: "Stuffed Peppers", price: 10 },
+    { name: "Spinach Dip", price: 7 },
+    { name: "Pretzel Bites", price: 6 },
+    { name: "Potato Wedges", price: 5 },
+    { name: "Sliders", price: 10 },
+    { name: "Breaded Zucchini", price: 8 },
+    { name: "Deviled Eggs", price: 6 },
+    { name: "Chili Cheese Fries", price: 9 },
+    { name: "Sweet Potato Fries", price: 7 },
+    { name: "Garlic Parmesan Knots", price: 6 },
+    { name: "Bruschetta", price: 8 },
+    { name: "Stuffed Clams", price: 12 },
+    { name: "BBQ Pork Bites", price: 11 }
+];
+
+        const foodList = document.getElementById('food-list');
+
+        foods.forEach((food, index) => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'col-md-3 food-item';
+            itemDiv.innerHTML = `
+                <h5>${food.name}</h5>
+                <p>Price: &#8377 ${food.price}</p>
+                <button onclick="addToCart(${index})" class="btn btn-primary btn-block">Add to Cart</button>
+            `;
+            foodList.appendChild(itemDiv);
+        });
+
+        function addToCart(index) {
+            const food = foods[index];
+            let cart = JSON.parse(localStorage.getItem('cart')) || {};
+
+            if (cart[food.name]) {
+                cart[food.name].quantity += 1;
+            } else {
+                cart[food.name] = { ...food, quantity: 1 };
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            alert(`${food.name} added to cart!`);
+        }
+    </script>
+</body>
+</html>

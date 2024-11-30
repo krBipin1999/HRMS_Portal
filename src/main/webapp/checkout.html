@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Veg Food Cart</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .cart-item {
+            border-bottom: 1px solid #ccc;
+            padding: 10px 0;
+        }
+        .total-amount {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: right;
+            margin-top: 20px;
+        }
+        body, html {
+            height: 100%;
+            margin: 0;
+            background: url('checkout.jpg') no-repeat center center fixed;
+            background-size: cover;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .container {
+            background-color: rgba(0, 0, 0, 0.9); 
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center my-4">Checkout</h1>
+        
+        <!-- Cart Items Section -->
+        <div id="checkout-cart" class="mb-4">
+            <!-- Cart items will be displayed here -->
+        </div>
+        
+        <!-- Total Amount and Payment Button -->
+        <div class="total-amount">
+            Total Amount: Rs <span id="total-amount">0</span>
+        </div>
+        <button class="btn btn-success btn-block mt-4" onclick="proceedToPayment()">Proceed to Payment</button>
+    </div>
+
+    <script>
+        // Retrieve cart data from localStorage
+        const cart = JSON.parse(localStorage.getItem('cart')) || {};
+
+        const checkoutCart = document.getElementById('checkout-cart');
+        const totalAmountEl = document.getElementById('total-amount');
+        let total = 0;
+
+        // Display cart items
+        Object.values(cart).forEach(item => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'cart-item row';
+            itemDiv.innerHTML = `
+                <div class="col-8">${item.name} x ${item.quantity}</div>
+                <div class="col-4 text-right">₹ ${item.price * item.quantity}</div>
+            `;
+            checkoutCart.appendChild(itemDiv);
+            total += item.price * item.quantity;
+        });
+
+        // Update total amount
+        totalAmountEl.textContent = total;
+
+        // Function to handle payment
+        function proceedToPayment() {
+            // Send cart data to backend (Java Servlet)
+            const cartData = JSON.stringify(cart);
+
+            fetch('http://your-server-url/saveCart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: cartData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Cart data saved to database. Proceeding to payment...');
+                    // Redirect to payment page or process payment
+                } else {
+                    alert('Failed to save cart data.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while saving the cart data.');
+            });
+        }
+    </script>
+</body>
+</html>

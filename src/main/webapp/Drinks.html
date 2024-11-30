@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drinks Menu</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .food-item {
+            margin: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        body, html {
+            height: 100%;
+            margin: 0;
+            background: url('pic10.jpg') no-repeat center center fixed;
+            background-size: cover;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .container-fluid {
+            background-color: rgba(0, 0, 0, 0.8); 
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <h1 class="text-center">Drinks Menu</h1>
+        <div class="row text-center" id="food-list">
+            <!-- Food items will be generated here -->
+        </div>
+        <div class="text-center mt-3">
+            <a href="cart.html" class="btn btn-success">Go to Cart</a>
+        </div>
+    </div>
+
+    <script>
+        const foods = [
+    { name: "Coca-Cola", price: 2 },
+    { name: "Pepsi", price: 2 },
+    { name: "Sprite", price: 2 },
+    { name: "Fanta", price: 2 },
+    { name: "Mountain Dew", price: 2 },
+    { name: "Dr Pepper", price: 3 },
+    { name: "Red Bull", price: 4 },
+    { name: "Monster Energy", price: 4 },
+    { name: "Gatorade", price: 3 },
+    { name: "Lemonade", price: 2 },
+    { name: "Iced Tea", price: 3 },
+    { name: "Orange Juice", price: 3 },
+    { name: "Apple Juice", price: 3 },
+    { name: "Mango Smoothie", price: 4 },
+    { name: "Strawberry Shake", price: 5 },
+    { name: "Vanilla Milkshake", price: 5 },
+    { name: "Chocolate Milk", price: 3 },
+    { name: "Cappuccino", price: 4 },
+    { name: "Espresso", price: 3 },
+    { name: "Latte", price: 4 },
+    { name: "Mocha", price: 4 },
+    { name: "Hot Chocolate", price: 3 },
+    { name: "Green Tea", price: 2 },
+    { name: "Black Coffee", price: 2 },
+    { name: "Herbal Tea", price: 3 },
+    { name: "Sparkling Water", price: 2 },
+    { name: "Mineral Water", price: 2 },
+    { name: "Tonic Water", price: 2 },
+    { name: "Club Soda", price: 2 },
+    { name: "Coconut Water", price: 3 }
+];
+
+        const foodList = document.getElementById('food-list');
+
+        foods.forEach((food, index) => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'col-md-3 food-item';
+            itemDiv.innerHTML = `
+                <h5>${food.name}</h5>
+                <p>Price: &#8377 ${food.price}</p>
+                <button onclick="addToCart(${index})" class="btn btn-primary btn-block">Add to Cart</button>
+            `;
+            foodList.appendChild(itemDiv);
+        });
+
+        function addToCart(index) {
+            const food = foods[index];
+            let cart = JSON.parse(localStorage.getItem('cart')) || {};
+
+            if (cart[food.name]) {
+                cart[food.name].quantity += 1;
+            } else {
+                cart[food.name] = { ...food, quantity: 1 };
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            alert(`${food.name} added to cart!`);
+        }
+    </script>
+</body>
+</html>

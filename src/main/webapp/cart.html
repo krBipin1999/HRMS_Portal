@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .cart-item {
+            /* border: 1px solid #ccc; */
+            border-radius: 5px;
+            padding: 10px;
+            margin: 5px 0;
+            color: black;
+        }
+
+        body, html {
+            height: 100%;
+            margin: 0;
+            background: url('gift.jpg') no-repeat center center fixed;
+            background-size: cover;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .container {
+            background-color: rgba(0, 0, 0, 0.8); 
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center my-4">Your Cart</h1>
+        <ul id="cart-items" class="list-group mb-4"></ul>
+        <div class="d-flex justify-content-between align-items-center">
+            <h4>Total Amount: Rs <span id="total-amount">0</span></h4>
+            <a href="checkout.html" class="btn btn-outline-success mb-3">Proceed to Checkout</a>
+        </div>
+    </div>
+
+    <script>
+        function loadCart() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || {};
+            const cartItems = document.getElementById('cart-items');
+            const totalAmount = document.getElementById('total-amount');
+            cartItems.innerHTML = '';
+            let total = 0;
+
+            Object.values(cart).forEach((item) => {
+                const li = document.createElement('li');
+                li.className = 'list-group-item d-flex justify-content-between align-items-center cart-item';
+                li.innerHTML = `
+                    ${item.name} - &#8377 ${item.price} x ${item.quantity} 
+                    <span>&#8377 ${item.price * item.quantity}</span>
+                    <button onclick="removeFromCart('${item.name}')" class="btn btn-danger btn-sm">Remove</button>
+                `;
+                cartItems.appendChild(li);
+                total += item.price * item.quantity;
+            });
+
+            totalAmount.textContent = total;
+        }
+
+        function removeFromCart(itemName) {
+            const cart = JSON.parse(localStorage.getItem('cart')) || {};
+            if (cart[itemName]) {
+                cart[itemName].quantity -= 1;
+                if (cart[itemName].quantity === 0) {
+                    delete cart[itemName];
+                }
+                localStorage.setItem('cart', JSON.stringify(cart));
+                loadCart();
+            }
+        }
+
+        loadCart();
+    </script>
+</body>
+</html>

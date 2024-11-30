@@ -18,10 +18,10 @@ public class LoginRes {
 	public static Response getLogin(@FormParam("email") String email, @FormParam("password") String passsword) {
 		boolean isCorrect=LoginHelper.getData(email, passsword);
 		if(isCorrect) {
-			 return Response.seeOther(java.net.URI.create("https://www.youtube.com/")).build();
+			 return Response.seeOther(java.net.URI.create("/Chatting/Home.html")).build();
 		}
 		else {
-			return Response.status(Status.BAD_REQUEST).entity("Wrong Credential!").build();
+			return Response.seeOther(java.net.URI.create("/Chatting/Error.html")).build();
 		}
 	}
 }

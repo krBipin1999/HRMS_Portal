@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veg Food Menu</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .food-item {
+            margin: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        body, html {
+            height: 100%;
+            margin: 0;
+            background: url('non-veg2.jpg') no-repeat center center fixed;
+            background-size: cover;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .container-fluid {
+            background-color: rgba(0, 0, 0, 0.8); 
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <h1 class="text-center">Non-Veg Food Menu</h1>
+        <div class="row text-center" id="food-list">
+            <!-- Food items will be generated here -->
+        </div>
+        <div class="text-center mt-3">
+            <a href="cart.html" class="btn btn-success">Go to Cart</a>
+        </div>
+    </div>
+
+    <script>
+        const foods = [
+    { name: "Chicken Curry", price: 12 },
+    { name: "Mutton Biryani", price: 18 },
+    { name: "Shrimp Salad", price: 14 },
+    { name: "Chicken Biryani", price: 15 },
+    { name: "Beef Stew", price: 16 },
+    { name: "Stuffed Chicken Breast", price: 17 },
+    { name: "Chicken Alfredo Pasta", price: 14 },
+    { name: "Prawn Stir Fry", price: 13 },
+    { name: "Lamb Soup", price: 10 },
+    { name: "Grilled Fish", price: 14 },
+    { name: "Pepperoni Pizza", price: 16 },
+    { name: "Chicken Shawarma", price: 12 },
+    { name: "Beef Burger", price: 15 },
+    { name: "Spaghetti with Meatballs", price: 13 },
+    { name: "Turkey Sandwich", price: 10 },
+    { name: "Chicken Samosa", price: 8 },
+    { name: "Stuffed Calamari", price: 15 },
+    { name: "Grilled Lamb Chops", price: 18 },
+    { name: "Chicken Tacos", price: 12 },
+    { name: "Seafood Fried Rice", price: 16 },
+    { name: "Grilled Salmon", price: 17 },
+    { name: "BBQ Wings", price: 9 },
+    { name: "Sushi Rolls", price: 20 },
+    { name: "Chicken Caesar Salad", price: 13 },
+    { name: "Fish Tacos", price: 12 },
+    { name: "Pork Ribs", price: 18 },
+    { name: "Chicken Wrap", price: 10 },
+    { name: "Lasagna with Meat Sauce", price: 15 },
+    { name: "Beef Chili", price: 13 },
+    { name: "Chicken Frittata", price: 11 },
+    { name: "Lamb Kabobs", price: 14 },
+    { name: "Chicken Parmesan", price: 15 },
+    { name: "Tempura Shrimp", price: 16 }
+];
+
+        const foodList = document.getElementById('food-list');
+
+        foods.forEach((food, index) => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'col-md-3 food-item';
+            itemDiv.innerHTML = `
+                <h5>${food.name}</h5>
+                <p>Price: &#8377 ${food.price}</p>
+                <button onclick="addToCart(${index})" class="btn btn-primary btn-block">Add to Cart</button>
+            `;
+            foodList.appendChild(itemDiv);
+        });
+
+        function addToCart(index) {
+            const food = foods[index];
+            let cart = JSON.parse(localStorage.getItem('cart')) || {};
+
+            if (cart[food.name]) {
+                cart[food.name].quantity += 1;
+            } else {
+                cart[food.name] = { ...food, quantity: 1 };
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            alert(`${food.name} added to cart!`);
+        }
+    </script>
+</body>
+</html>
